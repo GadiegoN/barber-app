@@ -5,19 +5,21 @@ import { Menu } from "lucide-react"
 
 export function Header() {
   return (
-    <Card>
-      <CardContent className="mx-auto flex w-full max-w-7xl items-center justify-between py-5">
-        <Image
-          src="/logo.png"
-          height={18}
-          width={120}
-          alt="Logo da barbearia"
-        />
+    <header>
+      <Card>
+        <CardContent className="mx-auto flex w-full max-w-7xl items-center justify-between py-5">
+          <Image
+            src="/logo.png"
+            height={18}
+            width={120}
+            alt="Logo da barbearia"
+          />
 
-        <Button variant="outline" size="icon">
-          <Menu />
-        </Button>
-      </CardContent>
-    </Card>
+          <Button variant="outline" size="icon">
+            <Menu />
+          </Button>
+        </CardContent>
+      </Card>
+    </header>
   )
 }

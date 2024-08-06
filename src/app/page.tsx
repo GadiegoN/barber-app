@@ -14,9 +14,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export default async function Home() {
   const barberShop = await db.barbershop.findMany()
+  const popularBarberShop = await db.barbershop.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  })
 
   return (
     <div className="mx-auto flex w-11/12 max-w-7xl flex-col space-y-6">
@@ -32,6 +38,47 @@ export default async function Home() {
         </Button>
       </div>
 
+      <ScrollArea className="mx-auto w-full whitespace-nowrap rounded-md pb-4">
+        <div className="flex gap-3">
+          <Button variant="secondary" className="gap-2">
+            <Image src="/cabelo.svg" width={16} height={16} alt="Cabelo" />
+            Cabelo
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image src="/barba.svg" width={16} height={16} alt="Barba" />
+            Barba
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image
+              src="/acabamento.svg"
+              width={16}
+              height={16}
+              alt="Acabamento"
+            />
+            Acabamento
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image
+              src="/acabamento.svg"
+              width={16}
+              height={16}
+              alt="Acabamento"
+            />
+            Acabamento
+          </Button>
+          <Button variant="secondary" className="gap-2">
+            <Image
+              src="/acabamento.svg"
+              width={16}
+              height={16}
+              alt="Acabamento"
+            />
+            Acabamento
+          </Button>
+        </div>
+        <ScrollBar orientation="horizontal" className="cursor-pointer" />
+      </ScrollArea>
+
       <div className="relative h-36 w-full md:h-64 lg:h-96">
         <Image
           alt="Agende nos melhores barbeiros da região"
@@ -42,11 +89,11 @@ export default async function Home() {
         />
       </div>
 
-      <h2 className="select-none text-xs font-bold uppercase text-gray-400">
+      <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
         Agendamentos
       </h2>
 
-      <Card>
+      <Card className="mx-auto w-10/12 md:w-11/12">
         <CardContent className="flex h-32 justify-between p-0">
           <div className="flex flex-col justify-center gap-2 px-4">
             <Badge className="w-fit">Confirmado</Badge>
@@ -68,13 +115,32 @@ export default async function Home() {
         </CardContent>
       </Card>
 
-      <h2 className="select-none text-xs font-bold uppercase text-gray-400">
+      <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
         Recomendados
       </h2>
 
       <Carousel className="mx-auto w-10/12 max-w-7xl md:w-11/12">
         <CarouselContent className="gap-2">
           {barberShop.map((barberShop) => (
+            <CarouselItem
+              key={barberShop.id}
+              className="basis-1/2 md:basis-1/3"
+            >
+              <BarberShopItem barbershop={barberShop} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+
+      <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
+        Populares
+      </h2>
+
+      <Carousel className="mx-auto w-10/12 max-w-7xl md:w-11/12">
+        <CarouselContent className="gap-2">
+          {popularBarberShop.map((barberShop) => (
             <CarouselItem
               key={barberShop.id}
               className="basis-1/2 md:basis-1/3"

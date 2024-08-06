@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -17,12 +18,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-bg" className="dark">
+    <html
+      lang="pt-bg"
+      className="dark overflow-auto [&::-webkit-scrollbar]:hidden"
+    >
       <body className={inter.className}>
         <ThemeProvider>
           <main className="space-y-5">
             <Header />
             {children}
+            <Footer />
           </main>
         </ThemeProvider>
       </body>
