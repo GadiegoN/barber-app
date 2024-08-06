@@ -6,7 +6,7 @@ import { Menu } from "lucide-react"
 export function Header() {
   return (
     <Card>
-      <CardContent className="mx-auto flex w-11/12 max-w-7xl items-center justify-between py-5">
+      <CardContent className="mx-auto flex w-full max-w-7xl items-center justify-between py-5">
         <Image
           src="/logo.png"
           height={18}
