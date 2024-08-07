@@ -1,8 +1,5 @@
 import { BarberShopItem } from "@/components/barber-shop-item"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { db } from "@/lib/prisma"
 import { Search } from "lucide-react"
@@ -15,6 +12,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { quickSearchOptions } from "@/constants/search"
+import { BookingItem } from "@/components/booking-item"
 
 export default async function Home() {
   const barberShop = await db.barbershop.findMany()
@@ -40,41 +39,17 @@ export default async function Home() {
 
       <ScrollArea className="mx-auto w-full whitespace-nowrap rounded-md pb-4">
         <div className="flex gap-3">
-          <Button variant="secondary" className="gap-2">
-            <Image src="/cabelo.svg" width={16} height={16} alt="Cabelo" />
-            Cabelo
-          </Button>
-          <Button variant="secondary" className="gap-2">
-            <Image src="/barba.svg" width={16} height={16} alt="Barba" />
-            Barba
-          </Button>
-          <Button variant="secondary" className="gap-2">
-            <Image
-              src="/acabamento.svg"
-              width={16}
-              height={16}
-              alt="Acabamento"
-            />
-            Acabamento
-          </Button>
-          <Button variant="secondary" className="gap-2">
-            <Image
-              src="/acabamento.svg"
-              width={16}
-              height={16}
-              alt="Acabamento"
-            />
-            Acabamento
-          </Button>
-          <Button variant="secondary" className="gap-2">
-            <Image
-              src="/acabamento.svg"
-              width={16}
-              height={16}
-              alt="Acabamento"
-            />
-            Acabamento
-          </Button>
+          {quickSearchOptions.map((option, i) => (
+            <Button key={i} variant="secondary" className="gap-2">
+              <Image
+                src={option.imageUrl}
+                width={16}
+                height={16}
+                alt={option.title}
+              />
+              {option.title}
+            </Button>
+          ))}
         </div>
         <ScrollBar orientation="horizontal" className="cursor-pointer" />
       </ScrollArea>
@@ -89,31 +64,7 @@ export default async function Home() {
         />
       </div>
 
-      <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
-        Agendamentos
-      </h2>
-
-      <Card className="mx-auto w-10/12 md:w-11/12">
-        <CardContent className="flex h-32 justify-between p-0">
-          <div className="flex flex-col justify-center gap-2 px-4">
-            <Badge className="w-fit">Confirmado</Badge>
-            <h3 className="font-semibold">Corte de cabelo</h3>
-
-            <div className="flex items-center gap-2">
-              <Avatar className="size-6">
-                <AvatarImage src="https://github.com/gadiegon.png" />
-                <AvatarFallback>GN</AvatarFallback>
-              </Avatar>
-              <p className="text-sm">Gadiego Nogueira</p>
-            </div>
-          </div>
-          <div className="flex w-3/12 flex-col items-center justify-center border-l-2">
-            <p className="text-sm">Agosto</p>
-            <p className="text-2xl">07</p>
-            <p className="text-sm">09:45</p>
-          </div>
-        </CardContent>
-      </Card>
+      <BookingItem />
 
       <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
         Recomendados
