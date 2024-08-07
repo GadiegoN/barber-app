@@ -15,7 +15,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { quickSearchOptions } from "@/constants/search"
 import { BookingItem } from "@/components/booking-item"
 import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
 
 export default async function Home() {
   const barberShop = await db.barbershop.findMany()
@@ -108,7 +107,6 @@ export default async function Home() {
           <CarouselNext />
         </Carousel>
       </div>
-      <Footer />
     </div>
   )
 }
