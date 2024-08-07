@@ -1,3 +1,4 @@
+import { ServiceItem } from "@/components/service-item"
 import { Button } from "@/components/ui/button"
 import { db } from "@/lib/prisma"
 import { ChevronLeft, MapPin, Menu, Star } from "lucide-react"
@@ -17,6 +18,9 @@ export default async function BarberShopDetails({
   const barbershopp = await db.barbershop.findUnique({
     where: {
       id: params.id,
+    },
+    include: {
+      services: true,
     },
   })
 
@@ -70,7 +74,7 @@ export default async function BarberShopDetails({
         </div>
       </section>
 
-      <div className="flex h-1 w-full bg-secondary" />
+      <div className="flex h-px w-full bg-secondary" />
 
       <section className="mx-auto w-11/12 max-w-7xl space-y-2">
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
@@ -79,7 +83,16 @@ export default async function BarberShopDetails({
         <p className="text-justify text-sm">{barbershopp.description}</p>
       </section>
 
-      <div className="flex h-1 w-full bg-secondary" />
+      <div className="flex h-px w-full bg-secondary" />
+
+      <section className="mx-auto w-11/12 max-w-7xl space-y-3">
+        <h2 className="select-none text-xs font-bold uppercase text-gray-400">
+          Serviços
+        </h2>
+        {barbershopp.services.map((service) => (
+          <ServiceItem key={service.id} service={service} />
+        ))}
+      </section>
     </div>
   )
 }
