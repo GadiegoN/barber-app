@@ -1,8 +1,10 @@
+import { MenuSheet } from "@/components/menu-sheet"
 import { PhoneItem } from "@/components/phone-item"
+import { Separator } from "@/components/separator"
 import { ServiceItem } from "@/components/service-item"
 import { Button } from "@/components/ui/button"
 import { db } from "@/lib/prisma"
-import { ChevronLeft, MapPin, Menu, Star } from "lucide-react"
+import { ChevronLeft, MapPin, Star } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -52,13 +54,9 @@ export default async function BarberShopDetails({
             </Link>
           </Button>
 
-          <Button
-            size="icon"
-            variant="secondary"
-            className="absolute right-4 top-4 z-10"
-          >
-            <Menu />
-          </Button>
+          <div className="absolute right-4 top-4 z-10">
+            <MenuSheet />
+          </div>
         </div>
       </div>
 
@@ -75,7 +73,7 @@ export default async function BarberShopDetails({
         </div>
       </section>
 
-      <div className="flex h-px w-full bg-secondary" />
+      <Separator />
 
       <section className="mx-auto w-11/12 max-w-7xl space-y-2">
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
@@ -84,7 +82,7 @@ export default async function BarberShopDetails({
         <p className="text-justify text-sm">{barbershopp.description}</p>
       </section>
 
-      <div className="flex h-px w-full bg-secondary" />
+      <Separator />
 
       <section className="mx-auto w-11/12 max-w-7xl space-y-3">
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
@@ -94,7 +92,7 @@ export default async function BarberShopDetails({
           <ServiceItem key={service.id} service={service} />
         ))}
 
-        <div className="flex h-px w-full bg-secondary" />
+        <Separator />
 
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
           Contato

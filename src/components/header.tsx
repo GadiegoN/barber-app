@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { Card, CardContent } from "./ui/card"
-import { Button } from "./ui/button"
-import { Menu } from "lucide-react"
+import { MenuSheet } from "./menu-sheet"
 
 export function Header() {
   return (
@@ -15,9 +14,7 @@ export function Header() {
             alt="Logo da barbearia"
           />
 
-          <Button variant="outline" size="icon">
-            <Menu />
-          </Button>
+          <MenuSheet />
         </CardContent>
       </Card>
     </header>
