@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Button } from "./ui/button"
-import { Calendar, Home, LogOut, Menu } from "lucide-react"
+import { Calendar, Home, LogIn, LogOut, Menu, User } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -9,9 +9,18 @@ import {
   SheetTitle,
   SheetClose,
 } from "./ui/sheet"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { Separator } from "./separator"
 import { quickSearchOptions } from "@/constants/search"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
 
 export function MenuSheet() {
@@ -27,7 +36,7 @@ export function MenuSheet() {
           <SheetTitle className="text-left">Menu</SheetTitle>
         </SheetHeader>
 
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <Avatar>
             <AvatarImage
               className="border-2 border-primary"
@@ -40,6 +49,43 @@ export function MenuSheet() {
           <div>
             <p className="font-bold">Gadiego Nogueira</p>
             <p className="truncate text-xs">gadiego@gmail.com</p>
+          </div>
+        </div> */}
+
+        <div className="flex items-center gap-3">
+          <div className="rounded-full border border-primary p-1">
+            <User size={40} />
+          </div>
+          <div className="flex w-full items-center justify-between">
+            <p className="text-lg font-bold">Olá, faça seu login</p>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button size="icon">
+                  <LogIn />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="w-11/12">
+                <DialogHeader>
+                  <DialogTitle>Faça login na plataforma</DialogTitle>
+                  <DialogDescription>
+                    Conecte-se usando sua conta do Google.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <Button
+                  variant="outline"
+                  className="items-center gap-1 font-bold"
+                >
+                  <Image
+                    src="/google-logo.svg"
+                    width={18}
+                    height={18}
+                    alt="Fazer login com o google"
+                  />
+                  Google
+                </Button>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
