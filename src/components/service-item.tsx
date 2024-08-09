@@ -1,13 +1,14 @@
-import { BarbershopService } from "@prisma/client"
+import { Barbershop, BarbershopService } from "@prisma/client"
 import { Card, CardContent } from "./ui/card"
 import Image from "next/image"
-import { Button } from "./ui/button"
+import { MakeReservation } from "./make-reservation"
 
 interface ServiceProps {
   service: BarbershopService
+  barberShop: Pick<Barbershop, "name">
 }
 
-export function ServiceItem({ service }: ServiceProps) {
+export function ServiceItem({ service, barberShop }: ServiceProps) {
   return (
     <Card className="flex h-28 justify-between">
       <CardContent className="flex w-full gap-3 p-0">
@@ -31,9 +32,8 @@ export function ServiceItem({ service }: ServiceProps) {
                 currency: "BRL",
               }).format(Number(service.price))}
             </p>
-            <Button size="sm" variant="secondary">
-              Reservar
-            </Button>
+
+            <MakeReservation service={service} barberShop={barberShop.name} />
           </div>
         </div>
       </CardContent>

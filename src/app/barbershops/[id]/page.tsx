@@ -89,7 +89,11 @@ export default async function BarberShopDetails({
           Serviços
         </h2>
         {barbershopp.services.map((service) => (
-          <ServiceItem key={service.id} service={service} />
+          <ServiceItem
+            key={service.id}
+            service={service}
+            barberShop={barbershopp}
+          />
         ))}
 
         <Separator />
