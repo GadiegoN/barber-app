@@ -1,8 +1,6 @@
 import { BarberShopItem } from "@/components/barber-shop-item"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { db } from "@/lib/prisma"
-import { Search } from "lucide-react"
 import Image from "next/image"
 import {
   Carousel,
@@ -15,6 +13,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { quickSearchOptions } from "@/constants/search"
 import { BookingItem } from "@/components/booking-item"
 import { Header } from "@/components/header"
+import { Search } from "@/components/search"
 
 export default async function Home() {
   const barberShop = await db.barbershop.findMany()
@@ -33,12 +32,7 @@ export default async function Home() {
           <p>Terça-feira, 06 de agosto.</p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Input placeholder="Faça sua busca..." />
-          <Button>
-            <Search />
-          </Button>
-        </div>
+        <Search />
 
         <ScrollArea className="mx-auto w-full whitespace-nowrap rounded-md pb-4">
           <div className="flex gap-3">

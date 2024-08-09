@@ -26,8 +26,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ThemeProvider>
-            <main className="space-y-4">
-              {children}
+            <main className="flex min-h-screen flex-col space-y-4">
+              <div className="flex-1">{children}</div>
               <Footer />
             </main>
             <Toaster />
