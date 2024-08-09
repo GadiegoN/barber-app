@@ -122,16 +122,20 @@ export function MenuSheet() {
         <Separator />
         <div className="flex flex-col gap-4">
           {quickSearchOptions.map((option, i) => (
-            <Button key={i} className="justify-start gap-2" variant="ghost">
-              <Image
-                src={option.imageUrl}
-                alt={option.title}
-                height={18}
-                width={18}
-                quality={100}
-              />
-              {option.title}
-            </Button>
+            <SheetClose key={i} asChild>
+              <Button asChild className="justify-start gap-2" variant="ghost">
+                <Link href={`/barbershops?service=${option.title}`}>
+                  <Image
+                    src={option.imageUrl}
+                    alt={option.title}
+                    height={18}
+                    width={18}
+                    quality={100}
+                  />
+                  {option.title}
+                </Link>
+              </Button>
+            </SheetClose>
           ))}
         </div>
         <Separator />

@@ -14,6 +14,7 @@ import { quickSearchOptions } from "@/constants/search"
 import { BookingItem } from "@/components/booking-item"
 import { Header } from "@/components/header"
 import { Search } from "@/components/search"
+import Link from "next/link"
 
 export default async function Home() {
   const barberShop = await db.barbershop.findMany()
@@ -37,14 +38,16 @@ export default async function Home() {
         <ScrollArea className="mx-auto w-full whitespace-nowrap rounded-md pb-4">
           <div className="flex gap-3">
             {quickSearchOptions.map((option, i) => (
-              <Button key={i} variant="secondary" className="gap-2">
-                <Image
-                  src={option.imageUrl}
-                  width={16}
-                  height={16}
-                  alt={option.title}
-                />
-                {option.title}
+              <Button asChild key={i} variant="secondary" className="gap-2">
+                <Link href={`/barbershops?service=${option.title}`}>
+                  <Image
+                    src={option.imageUrl}
+                    width={16}
+                    height={16}
+                    alt={option.title}
+                  />
+                  {option.title}
+                </Link>
               </Button>
             ))}
           </div>
