@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import { Button } from "./ui/button"
 import { Calendar, Home, LogIn, LogOut, Menu, User } from "lucide-react"
@@ -20,10 +22,20 @@ import {
 
 import { Separator } from "./separator"
 import { quickSearchOptions } from "@/constants/search"
-// import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 export function MenuSheet() {
+  const { data } = useSession()
+
+  async function handleLoginWithGoogleClick() {
+    await signIn("google")
+  }
+  async function handleLogoutClick() {
+    await signOut()
+  }
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -36,58 +48,61 @@ export function MenuSheet() {
           <SheetTitle className="text-left">Menu</SheetTitle>
         </SheetHeader>
 
-        {/* <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage
-              className="border-2 border-primary"
-              src="https://github.com/gadiegon.png"
-            />
-            <AvatarFallback className="border-2 border-primary">
-              GN
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <p className="font-bold">Gadiego Nogueira</p>
-            <p className="truncate text-xs">gadiego@gmail.com</p>
+        {data?.user ? (
+          <div className="flex items-center gap-3">
+            <Avatar>
+              <AvatarImage
+                className="border-2 border-primary"
+                src={data.user.image as string}
+              />
+              <AvatarFallback className="border-2 border-primary">
+                {data.user.name?.slice(2)}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="font-bold">{data.user.name}</p>
+              <p className="truncate text-xs">{data.user.email}</p>
+            </div>
           </div>
-        </div> */}
+        ) : (
+          <div className="flex items-center gap-3">
+            <div className="rounded-full border border-primary p-1">
+              <User size={40} />
+            </div>
+            <div className="flex w-full items-center justify-between">
+              <p className="text-lg font-bold">Olá, faça seu login</p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button size="icon">
+                    <LogIn />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="w-11/12">
+                  <DialogHeader>
+                    <DialogTitle>Faça login na plataforma</DialogTitle>
+                    <DialogDescription>
+                      Conecte-se usando sua conta do Google.
+                    </DialogDescription>
+                  </DialogHeader>
 
-        <div className="flex items-center gap-3">
-          <div className="rounded-full border border-primary p-1">
-            <User size={40} />
+                  <Button
+                    variant="outline"
+                    className="items-center gap-1 font-bold"
+                    onClick={handleLoginWithGoogleClick}
+                  >
+                    <Image
+                      src="/google-logo.svg"
+                      width={18}
+                      height={18}
+                      alt="Fazer login com o google"
+                    />
+                    Google
+                  </Button>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
-          <div className="flex w-full items-center justify-between">
-            <p className="text-lg font-bold">Olá, faça seu login</p>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button size="icon">
-                  <LogIn />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-11/12">
-                <DialogHeader>
-                  <DialogTitle>Faça login na plataforma</DialogTitle>
-                  <DialogDescription>
-                    Conecte-se usando sua conta do Google.
-                  </DialogDescription>
-                </DialogHeader>
-
-                <Button
-                  variant="outline"
-                  className="items-center gap-1 font-bold"
-                >
-                  <Image
-                    src="/google-logo.svg"
-                    width={18}
-                    height={18}
-                    alt="Fazer login com o google"
-                  />
-                  Google
-                </Button>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
+        )}
 
         <Separator />
         <div className="flex flex-col gap-4">
@@ -120,10 +135,16 @@ export function MenuSheet() {
           ))}
         </div>
         <Separator />
-        <Button className="justify-start gap-2" variant="ghost">
-          <LogOut size={18} />
-          Sair da conta
-        </Button>
+        {data?.user && (
+          <Button
+            onClick={handleLogoutClick}
+            className="w-full justify-start gap-2"
+            variant="ghost"
+          >
+            <LogOut size={18} />
+            Sair da conta
+          </Button>
+        )}
       </SheetContent>
     </Sheet>
   )

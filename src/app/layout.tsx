@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Footer } from "@/components/footer"
 import { Toaster } from "@/components/ui/sonner"
+import AuthProvider from "./porviders/auth"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -23,13 +24,15 @@ export default function RootLayout({
       className="dark overflow-auto [&::-webkit-scrollbar]:hidden"
     >
       <body className={inter.className}>
-        <ThemeProvider>
-          <main className="space-y-4">
-            {children}
-            <Footer />
-          </main>
-          <Toaster />
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <main className="space-y-4">
+              {children}
+              <Footer />
+            </main>
+            <Toaster />
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   )
