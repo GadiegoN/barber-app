@@ -19,6 +19,15 @@ import { createBooking } from "@/actions/create-booking"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { getBookings } from "@/actions/get-bookings"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { SignInButton } from "./sign-in-button"
 
 const TIME_LIST = [
   "08:00",
@@ -126,14 +135,38 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
 
   return (
     <Sheet open={bookingSheetIsOpen} onOpenChange={handleBookingSheetIsOpen}>
-      <Button
-        size="sm"
-        variant="secondary"
-        disabled={data?.user ? false : true}
-        onClick={() => setBookingSheetIsOpen(true)}
-      >
-        Reservar
-      </Button>
+      {data?.user ? (
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={data?.user ? false : true}
+          onClick={() => setBookingSheetIsOpen(true)}
+        >
+          Reservar
+        </Button>
+      ) : (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              size="sm"
+              variant="secondary"
+              disabled={!data?.user ? false : true}
+            >
+              Reservar
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="w-11/12">
+            <DialogHeader>
+              <DialogTitle>Faça login na plataforma</DialogTitle>
+              <DialogDescription>
+                Conecte-se usando sua conta do Google.
+              </DialogDescription>
+            </DialogHeader>
+
+            <SignInButton />
+          </DialogContent>
+        </Dialog>
+      )}
       <SheetContent className="items-center space-y-5 px-0">
         <SheetHeader>
           <SheetTitle>Fazer Reserva</SheetTitle>
