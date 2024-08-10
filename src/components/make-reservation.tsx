@@ -120,7 +120,6 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
       })
       await createBooking({
         serviceId: service.id,
-        userId: (data?.user as any).id,
         date: newDate,
       })
 
