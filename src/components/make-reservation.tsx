@@ -18,6 +18,8 @@ import { Card, CardContent } from "./ui/card"
 import { BarbershopService } from "@prisma/client"
 import { format, set } from "date-fns"
 import { createBooking } from "@/actions/create-booking"
+import { toast } from "sonner"
+import { useSession } from "next-auth/react"
 
 const TIME_LIST = [
   "08:00",
@@ -40,6 +42,7 @@ interface ServiceProps {
 }
 
 export function MakeReservation({ service, barberShop }: ServiceProps) {
+  const { data } = useSession()
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
   const [selectedTime, setSelectedTime] = useState("")
 
@@ -52,29 +55,34 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
   }
 
   async function handleCreateBooking() {
-    if (!selectedDay || selectedTime) {
-      return
+    try {
+      if (!selectedDay || !selectedTime) return
+      const hour = Number(selectedTime.split(":")[0])
+      const minute = Number(selectedTime.split(":")[1])
+      const newDate = set(selectedDay, {
+        minutes: minute,
+        hours: hour,
+      })
+      await createBooking({
+        serviceId: service.id,
+        userId: (data?.user as any).id,
+        date: newDate,
+      })
+      toast.success("Reserva criada com sucesso!")
+    } catch (error) {
+      console.error(error)
+      toast.error("Erro ao criar reserva!")
     }
-
-    const hours = Number(selectedTime.split(":")[0])
-    const minutes = Number(selectedTime.split(":")[1])
-
-    const newDate = set(selectedDay, {
-      minutes,
-      hours,
-    })
-
-    await createBooking({
-      serviceId: service.id,
-      userId: "gadiegonid",
-      date: newDate,
-    })
   }
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button size="sm" variant="secondary">
+        <Button
+          size="sm"
+          variant="secondary"
+          disabled={data?.user ? false : true}
+        >
           Reservar
         </Button>
       </SheetTrigger>
@@ -179,7 +187,12 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
 
         <SheetFooter className="mx-auto w-11/12">
           <SheetClose asChild>
-            <Button onClick={handleCreateBooking}>Confirmar</Button>
+            <Button
+              disabled={selectedDay && selectedTime ? false : true}
+              onClick={handleCreateBooking}
+            >
+              Confirmar
+            </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

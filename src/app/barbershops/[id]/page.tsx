@@ -102,8 +102,8 @@ export default async function BarberShopDetails({
           Contato
         </h2>
         <div className="space-y-3">
-          {barbershopp.phones.map((phone) => (
-            <PhoneItem key={phone} phone={phone} />
+          {barbershopp.phones.map((phone, i) => (
+            <PhoneItem key={i} phone={phone} />
           ))}
         </div>
       </section>

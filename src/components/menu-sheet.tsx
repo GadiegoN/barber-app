@@ -24,14 +24,12 @@ import { Separator } from "./separator"
 import { quickSearchOptions } from "@/constants/search"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
+import { SignInButton } from "./sign-in-button"
 
 export function MenuSheet() {
   const { data } = useSession()
 
-  async function handleLoginWithGoogleClick() {
-    await signIn("google")
-  }
   async function handleLogoutClick() {
     await signOut()
   }
@@ -85,19 +83,7 @@ export function MenuSheet() {
                     </DialogDescription>
                   </DialogHeader>
 
-                  <Button
-                    variant="outline"
-                    className="items-center gap-1 font-bold"
-                    onClick={handleLoginWithGoogleClick}
-                  >
-                    <Image
-                      src="/google-logo.svg"
-                      width={18}
-                      height={18}
-                      alt="Fazer login com o google"
-                    />
-                    Google
-                  </Button>
+                  <SignInButton />
                 </DialogContent>
               </Dialog>
             </div>
