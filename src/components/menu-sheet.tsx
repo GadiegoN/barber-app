@@ -100,9 +100,11 @@ export function MenuSheet() {
               </Link>
             </Button>
           </SheetClose>
-          <Button className="justify-start gap-2" variant="ghost">
-            <Calendar size={18} />
-            Agendamentos
+          <Button asChild className="justify-start gap-2" variant="ghost">
+            <Link href="/bookings">
+              <Calendar size={18} />
+              Agendamentos
+            </Link>
           </Button>
         </div>
         <Separator />
