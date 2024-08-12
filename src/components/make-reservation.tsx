@@ -8,13 +8,13 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Calendar } from "@/components/ui/calendar"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ptBR } from "date-fns/locale"
 import { Separator } from "./separator"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Card, CardContent } from "./ui/card"
 import { BarbershopService, Booking } from "@prisma/client"
-import { addDays, format, set } from "date-fns"
+import { addDays, format, isPast, isToday, set } from "date-fns"
 import { createBooking } from "@/actions/create-booking"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
@@ -44,10 +44,21 @@ const TIME_LIST = [
   "19:00",
 ]
 
-function getTimeList(bookings: Booking[]) {
+interface GetTimeListProps {
+  bookings: Booking[]
+  selectedDay: Date
+}
+
+function getTimeList({ bookings, selectedDay }: GetTimeListProps) {
   return TIME_LIST.filter((time) => {
     const hour = Number(time.split(":")[0])
     const minutes = Number(time.split(":")[1])
+
+    const timeIsOnThePast = isPast(set(new Date(), { hours: hour, minutes }))
+
+    if (timeIsOnThePast && isToday(selectedDay)) {
+      return false
+    }
 
     const hasBookingOnCurrentTime = bookings.some(
       (booking) =>
@@ -132,6 +143,15 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
     }
   }
 
+  const timeList = useMemo(() => {
+    if (!selectedDay) return []
+
+    return getTimeList({
+      bookings: dayBookings,
+      selectedDay,
+    })
+  }, [dayBookings, selectedDay])
+
   return (
     <Sheet open={bookingSheetIsOpen} onOpenChange={handleBookingSheetIsOpen}>
       {data?.user ? (
@@ -174,7 +194,7 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
         <Separator />
         <div>
           <Calendar
-            fromDate={addDays(new Date(), 1)}
+            fromDate={addDays(new Date(), 0)}
             mode="single"
             selected={selectedDay}
             onSelect={handleDateSelect}
@@ -207,16 +227,22 @@ export function MakeReservation({ service, barberShop }: ServiceProps) {
         {selectedDay ? (
           <ScrollArea className="mx-auto w-full whitespace-nowrap rounded-md pb-6">
             <div className="flex gap-3 overflow-x-auto px-5">
-              {getTimeList(dayBookings).map((time) => (
-                <Button
-                  variant={selectedTime === time ? "default" : "outline"}
-                  className="rounded-full border-2"
-                  key={time}
-                  onClick={() => handleTimeSelected(time)}
-                >
-                  {time}
-                </Button>
-              ))}
+              {timeList.length > 0 ? (
+                timeList.map((time) => (
+                  <Button
+                    variant={selectedTime === time ? "default" : "outline"}
+                    className="rounded-full border-2"
+                    key={time}
+                    onClick={() => handleTimeSelected(time)}
+                  >
+                    {time}
+                  </Button>
+                ))
+              ) : (
+                <p className="text-xs">
+                  Não há mais horarios disponiveis para este dia.
+                </p>
+              )}
             </div>
             <ScrollBar orientation="horizontal" className="cursor-pointer" />
           </ScrollArea>
