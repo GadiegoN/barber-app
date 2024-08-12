@@ -37,23 +37,25 @@ export default async function Bookings() {
         <h1 className="text-xl font-bold">Agendamentos</h1>
 
         <div className="space-y-4">
-          <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
-            Confirmados
-          </h2>
           {bookings.map(
             (booking) =>
               isFuture(booking.date) && (
-                <BookingItem key={booking.id} booking={booking} />
+                <>
+                  <BookingItem key={booking.id} booking={booking} />
+                </>
               ),
           )}
           <Separator />
+
           <h2 className="ml-10 select-none text-xs font-bold uppercase text-gray-400">
             Finalizados
           </h2>
           {bookings.map(
             (booking) =>
               isPast(booking.date) && (
-                <BookingItem key={booking.id} booking={booking} />
+                <>
+                  <BookingItem key={booking.id} booking={booking} />
+                </>
               ),
           )}
         </div>
