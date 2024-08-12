@@ -18,6 +18,8 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { authOption } from "@/lib/auth"
 import { Separator } from "@/components/separator"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 
 export default async function Home() {
   const session = await getServerSession(authOption)
@@ -54,8 +56,18 @@ export default async function Home() {
       <Header />
       <div className="mx-auto flex w-11/12 max-w-7xl flex-col space-y-6">
         <div>
-          <h2 className="text-xl font-bold">Olá, Gadiego</h2>
-          <p>Terça-feira, 06 de agosto.</p>
+          <h2 className="text-xl font-bold">
+            Olá, {session?.user ? session.user.name : "bem vindo!"}
+          </h2>
+          <div className="flex gap-2">
+            <span className="capitalize">
+              {format(new Date(), "EEEE, d", { locale: ptBR })}
+            </span>
+            <span>de</span>
+            <span className="capitalize">
+              {format(new Date(), "MMMM", { locale: ptBR })}
+            </span>
+          </div>
         </div>
 
         <Search />
