@@ -18,7 +18,7 @@ interface BarberShopPageProps {
 export default async function BarberShopDetails({
   params,
 }: BarberShopPageProps) {
-  const barbershopp = await db.barbershop.findUnique({
+  const barbershop = await db.barbershop.findUnique({
     where: {
       id: params.id,
     },
@@ -27,7 +27,7 @@ export default async function BarberShopDetails({
     },
   })
 
-  if (!barbershopp) {
+  if (!barbershop) {
     return notFound()
   }
 
@@ -35,8 +35,8 @@ export default async function BarberShopDetails({
     <div className="space-y-4">
       <div className="relative h-64 w-full">
         <Image
-          src={barbershopp.imageUrl as string}
-          alt={barbershopp.description as string}
+          src={barbershop.imageUrl as string}
+          alt={barbershop.description as string}
           fill
           quality={100}
           className="bg-center object-cover opacity-60 md:object-top"
@@ -61,11 +61,11 @@ export default async function BarberShopDetails({
       </div>
 
       <section className="mx-auto w-11/12 max-w-7xl space-y-2">
-        <h1 className="text-xl font-bold">{barbershopp.name}</h1>
+        <h1 className="text-xl font-bold">{barbershop.name}</h1>
 
         <div className="flex items-center gap-1">
           <MapPin className="text-primary" size={18} />
-          <p className="text-sm">{barbershopp.address}</p>
+          <p className="text-sm">{barbershop.address}</p>
         </div>
         <div className="flex items-center gap-1">
           <Star className="fill-primary text-primary" size={18} />
@@ -79,7 +79,7 @@ export default async function BarberShopDetails({
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
           Sobre nós
         </h2>
-        <p className="text-justify text-sm">{barbershopp.description}</p>
+        <p className="text-justify text-sm">{barbershop.description}</p>
       </section>
 
       <Separator />
@@ -88,11 +88,11 @@ export default async function BarberShopDetails({
         <h2 className="select-none text-xs font-bold uppercase text-gray-400">
           Serviços
         </h2>
-        {barbershopp.services.map((service) => (
+        {barbershop.services.map((service) => (
           <ServiceItem
             key={service.id}
-            service={service}
-            barberShop={barbershopp}
+            service={JSON.parse(JSON.stringify(service))}
+            barberShop={JSON.parse(JSON.stringify(barbershop))}
           />
         ))}
 
@@ -102,7 +102,7 @@ export default async function BarberShopDetails({
           Contato
         </h2>
         <div className="space-y-3">
-          {barbershopp.phones.map((phone, i) => (
+          {barbershop.phones.map((phone, i) => (
             <PhoneItem key={i} phone={phone} />
           ))}
         </div>

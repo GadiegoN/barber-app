@@ -41,7 +41,10 @@ export default async function Bookings() {
             (booking) =>
               isFuture(booking.date) && (
                 <>
-                  <BookingItem key={booking.id} booking={booking} />
+                  <BookingItem
+                    key={booking.id}
+                    booking={JSON.parse(JSON.stringify(booking))}
+                  />
                 </>
               ),
           )}
@@ -54,7 +57,10 @@ export default async function Bookings() {
             (booking) =>
               isPast(booking.date) && (
                 <>
-                  <BookingItem key={booking.id} booking={booking} />
+                  <BookingItem
+                    key={booking.id}
+                    booking={JSON.parse(JSON.stringify(booking))}
+                  />
                 </>
               ),
           )}
